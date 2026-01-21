@@ -1,0 +1,21 @@
+Spring Security  - biblioteka umożliwiająca autentykację oraz autoryzację użytkowników. Zarządza bazą danych użytkowników
+i ich uprawnieniami. Biblioteka udostępnia wiele mechanizmów szyfrowania (zwykłe login i hasło, OAuth, Json Web Token).
+Autentykacja  - logowanie w ramach serwisu np. logowanie do forum, poczty email, Steam;
+Autoryzacja – następstwo autentykacji - dotyczny konkretnej czynności w serwisie, np. admin może usunąć posta dowolnego
+użytkownika, użytkownik może jedynie usunąć swojego posta.
+
+Dependency:
+
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+
+
+JsonWebToken - JWT
+
+Praca domowa:
+- Dorobic encje role, w ktorej bedziesz przechowywal role osobno
+- Przerobic controller do nadawania roli, tak zeby nadawac role innym endpointem (nie przy tworzeniu usera)
+- Ujednolicic nazewnictwo w apce
+- Dorobic endpointy z kontrola roli
