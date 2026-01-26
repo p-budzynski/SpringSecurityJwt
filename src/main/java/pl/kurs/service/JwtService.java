@@ -7,7 +7,6 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import pl.kurs.entity.User;
 
 import java.security.Key;
 import java.util.Date;
@@ -49,8 +48,6 @@ public class JwtService {
         return extractExpiration(token).before(new Date());
     }
 
-
-
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
@@ -58,7 +55,6 @@ public class JwtService {
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
     }
-
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsTFunction) {
         Claims claims = extractAllClaims(token);

@@ -5,19 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserDto {
+public class RoleDto {
 
     private Long id;
 
-    private String username;
+    private String roleName;
 
-    private String email;
-
-    private Set<String> roles;
 }
