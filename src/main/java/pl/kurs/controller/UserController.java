@@ -25,7 +25,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable("id") @Min(value = 1, message = "ID must be at least 1") Long id) {
-        User user = userService.getUserById(id);
+        User user = userService.getUserByIdWithRoles(id);
         return ResponseEntity.ok(userMapper.entityToDto(user));
     }
 

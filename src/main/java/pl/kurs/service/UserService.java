@@ -39,8 +39,8 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    public User getUserById(Long id) {
-        return userRepository.findById(id).
+    public User getUserByIdWithRoles(Long id) {
+        return userRepository.findByIdWithRoles(id).
                 orElseThrow(() -> new UserNotFoundException("User with id: " + id + " not found"));
     }
 
@@ -50,7 +50,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public UserDto updateUser(Long id, CreateUserDto dto) throws UserNotFoundException {
-        User userToUpdate = getUserById(id);
+        User userToUpdate = getUserByIdWithRoles(id);
 
         BeanUtils.copyProperties(userMapper.dtoToEntity(dto), userToUpdate);
 
@@ -59,7 +59,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void assignRoleToUser(Long id, String roleName) throws RoleNotFoundException {
-        User user = getUserById(id);
+        User user = getUserByIdWithRoles(id);
 
         Role role = roleService.findByRoleName(roleName);
 
@@ -68,7 +68,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void removeRoleFromUser(Long id, String roleName) throws RoleNotFoundException {
-        User user = getUserById(id);
+        User user = getUserByIdWithRoles(id);
 
         Role role = roleService.findByRoleName(roleName);
         user.getRoles().remove(role);
