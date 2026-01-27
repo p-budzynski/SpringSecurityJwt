@@ -13,15 +13,15 @@ import javax.management.relation.RoleNotFoundException;
 public class UserManagementController {
     private final UserService userService;
 
-    @PostMapping("/{username}/roles")
-    public ResponseEntity<Void> assignRole(@PathVariable("username") String username, @RequestBody String roleName) throws RoleNotFoundException {
-        userService.assignRoleToUser(username, roleName);
+    @PostMapping("/{id}/roles")
+    public ResponseEntity<Void> assignRole(@PathVariable("id") Long id, @RequestParam String roleName) throws RoleNotFoundException {
+        userService.assignRoleToUser(id, roleName);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{username}/roles")
-    public ResponseEntity<Void> revokeRoles(@PathVariable("username") String username, @RequestBody String roleName) throws RoleNotFoundException {
-        userService.removeRoleFromUser(username, roleName);
+    @DeleteMapping("/{id}/roles")
+    public ResponseEntity<Void> revokeRole(@PathVariable("id") Long id, @RequestParam String roleName) throws RoleNotFoundException {
+        userService.removeRoleFromUser(id, roleName);
         return ResponseEntity.noContent().build();
     }
 }

@@ -21,7 +21,7 @@ public class RoleService {
 
     @Transactional
     public RoleDto createRole(CreateRoleDto dto) {
-        String normalizedName = dto.getRoleName().toUpperCase();
+        String normalizedName = ensureRolePrefix(dto.getRoleName());
 
         if (roleRepository.existsByRoleName(normalizedName)) {
             throw new RoleIsExistsException("Role [" + normalizedName + "] is exists");
@@ -53,7 +53,17 @@ public class RoleService {
     }
 
     public Role findByRoleName(String roleName) throws RoleNotFoundException {
-        return roleRepository.findByRoleName(roleName)
+        return roleRepository.findByRoleName(ensureRolePrefix(roleName))
                 .orElseThrow(() -> new RoleNotFoundException("Role with name: " + roleName + " not found"));
+    }
+
+    private String ensureRolePrefix(String roleName) {
+        String upperRole = roleName.toUpperCase();
+
+        if (!upperRole.startsWith("ROLE_")) {
+            return "ROLE_" + upperRole;
+        }
+
+        return upperRole;
     }
 }

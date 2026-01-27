@@ -22,7 +22,7 @@ public class CreateUserDto {
     @NotBlank(message = "Email is required", groups = Create.class)
     private String email;
 
-    @Password
+    @Password(groups = Create.class)
     @NotBlank(message = "Password is required", groups = Create.class)
     private String password;
 

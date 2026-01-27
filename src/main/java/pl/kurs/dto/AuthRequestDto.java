@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class AuthRequestDto {
 
-    private String login;
+    private String username;
 
     private String password;
 }
