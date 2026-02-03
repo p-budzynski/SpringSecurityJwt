@@ -1,39 +1,32 @@
 package pl.kurs.entity;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.ToString;
 
-import java.util.Objects;
+import javax.management.relation.RoleNotFoundException;
 
-@Entity
-@Table(name = "roles")
-@NoArgsConstructor
-@Getter
-@Setter
-public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@AllArgsConstructor
+@ToString
+public enum Role {
+    ROLE_ADMIN("ROLE_ADMIN"),
+    ROLE_MODERATOR("ROLE_MODERATOR"),
+    ROLE_USER("ROLE_USER"),
+    ROLE_GUEST("ROLE_GUEST");
 
-    @Column(name = "role_name", nullable = false, unique = true)
-    private String roleName;
+    private final String name;
 
-    public Role(String roleName) {
-        this.roleName = roleName;
+    public static Role fromString(String roleName) throws RoleNotFoundException {
+        if (roleName == null || roleName.trim().isEmpty()) {
+            throw new RoleNotFoundException("Role name cannot be empty");
+        }
+
+        return switch (roleName.trim().toUpperCase()) {
+            case "ROLE_ADMIN" -> ROLE_ADMIN;
+            case "ROLE_MODERATOR" -> ROLE_MODERATOR;
+            case "ROLE_USER" -> ROLE_USER;
+            case "ROLE_GUEST" -> ROLE_GUEST;
+            default -> throw new RoleNotFoundException("Unknown role name: " + roleName);
+        };
     }
 
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        Role role = (Role) object;
-        return Objects.equals(roleName, role.roleName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(roleName);
-    }
 }

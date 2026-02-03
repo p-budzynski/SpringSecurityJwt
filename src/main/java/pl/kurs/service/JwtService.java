@@ -18,16 +18,16 @@ import java.util.function.Function;
 public class JwtService {
     private static final String SECRET = "D0nL4JKs9MxZp9DBt2HT/j54Ul+j9kZ3icVTMeLEe+w=";
 
-    public String generateToken(String login) {
+    public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, login);
+        return createToken(claims, username);
     }
 
-    private String createToken(Map<String, Object> claims, String login) {
+    private String createToken(Map<String, Object> claims, String username) {
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(login)
+                .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000*60*30))
                 .signWith(getSignatureKey(), SignatureAlgorithm.HS256)

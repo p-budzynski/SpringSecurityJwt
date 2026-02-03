@@ -24,7 +24,6 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-    private final RoleService roleService;
 
     public UserDto createUser(CreateUserDto createUserDto) {
         User user = userMapper.dtoToEntity(createUserDto);
@@ -35,8 +34,8 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return userRepository.findByUsernameWithRoles(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User: " + username + " not found"));
     }
 
     public User getUserByIdWithRoles(Long id) {
@@ -52,7 +51,7 @@ public class UserService implements UserDetailsService {
     public UserDto updateUser(Long id, CreateUserDto dto) throws UserNotFoundException {
         User userToUpdate = getUserByIdWithRoles(id);
 
-        BeanUtils.copyProperties(userMapper.dtoToEntity(dto), userToUpdate);
+        BeanUtils.copyProperties(userMapper.dtoToEntity(dto), userToUpdate, "id");
 
         return userMapper.entityToDto(userRepository.save(userToUpdate));
     }
@@ -60,8 +59,8 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void assignRoleToUser(Long id, String roleName) throws RoleNotFoundException {
         User user = getUserByIdWithRoles(id);
-
-        Role role = roleService.findByRoleName(roleName);
+        String normalizedName = ensureRolePrefix(roleName);
+        Role role = Role.fromString(normalizedName);
 
         user.getRoles().add(role);
     }
@@ -69,8 +68,16 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void removeRoleFromUser(Long id, String roleName) throws RoleNotFoundException {
         User user = getUserByIdWithRoles(id);
+        String normalizedName = ensureRolePrefix(roleName);
+        Role role = Role.fromString(normalizedName);
 
-        Role role = roleService.findByRoleName(roleName);
         user.getRoles().remove(role);
+    }
+
+    private String ensureRolePrefix(String roleName) {
+        if (roleName == null) return "";
+
+        String cleanName = roleName.trim().toUpperCase();
+        return cleanName.startsWith("ROLE_") ? cleanName : "ROLE_" + cleanName;
     }
 }

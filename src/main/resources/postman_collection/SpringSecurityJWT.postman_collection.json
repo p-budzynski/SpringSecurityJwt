@@ -9,11 +9,14 @@
     {
       "name": "login",
       "request": {
+        "auth": {
+          "type": "noauth"
+        },
         "method": "POST",
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"username\": \"romek\",\r\n    \"password\": \"Romek123!\"\r\n}",
+          "raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"Admin123!\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -21,13 +24,14 @@
           }
         },
         "url": {
-          "raw": "http://localhost:8081/login",
+          "raw": "http://localhost:8081/auth/login",
           "protocol": "http",
           "host": [
             "localhost"
           ],
           "port": "8081",
           "path": [
+            "auth",
             "login"
           ]
         }
@@ -37,11 +41,21 @@
     {
       "name": "create user",
       "request": {
+        "auth": {
+          "type": "noauth"
+        },
         "method": "POST",
-        "header": [],
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc2OTYyNzIzOSwiZXhwIjoxNzY5NjI5MDM5fQ.MYTM-quX6Wt5RtVDYO6Q1JhBsvh_ivXXSC4GyZ8oxlA",
+            "type": "text",
+            "disabled": true
+          }
+        ],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"username\": \"romek\",\r\n    \"email\": \"romek@mail.com\",\r\n    \"password\": \"Romek123!\"\r\n}",
+          "raw": "{\r\n    \"username\": \"romek\",\r\n    \"email\": \"romek@test.com\",\r\n    \"password\": \"Romek123!\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -72,12 +86,21 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc2OTUwMTU4MSwiZXhwIjoxNzY5NTAzMzgxfQ.Km4Ce6FSzhgQtPAiRMk6pmn6GDiBirqXP035delnOn8",
+            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc3MDE1MzAwMywiZXhwIjoxNzcwMTU0ODAzfQ.Mw15hp92uZ53y8UdCYfOmF-WBG35rjlyqE4FkF1Ge2c",
             "type": "text"
           }
         ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"roleName\": \"MODERATOR\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
         "url": {
-          "raw": "http://localhost:8081/management/3/roles?roleName=manager",
+          "raw": "http://localhost:8081/management/2/roles",
           "protocol": "http",
           "host": [
             "localhost"
@@ -85,14 +108,8 @@
           "port": "8081",
           "path": [
             "management",
-            "3",
+            "2",
             "roles"
-          ],
-          "query": [
-            {
-              "key": "roleName",
-              "value": "manager"
-            }
           ]
         }
       },
@@ -108,7 +125,7 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc2OTUwMTU4MSwiZXhwIjoxNzY5NTAzMzgxfQ.Km4Ce6FSzhgQtPAiRMk6pmn6GDiBirqXP035delnOn8",
+            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc3MDE1MzAwMywiZXhwIjoxNzcwMTU0ODAzfQ.Mw15hp92uZ53y8UdCYfOmF-WBG35rjlyqE4FkF1Ge2c",
             "type": "text"
           }
         ],
@@ -160,12 +177,21 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc2OTUwMTU4MSwiZXhwIjoxNzY5NTAzMzgxfQ.Km4Ce6FSzhgQtPAiRMk6pmn6GDiBirqXP035delnOn8",
+            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc3MDE1MzAwMywiZXhwIjoxNzcwMTU0ODAzfQ.Mw15hp92uZ53y8UdCYfOmF-WBG35rjlyqE4FkF1Ge2c",
             "type": "text"
           }
         ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"roleName\" : \"MODERATOR\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
         "url": {
-          "raw": "http://localhost:8081/management/3/roles?roleName=manager",
+          "raw": "http://localhost:8081/management/2/roles",
           "protocol": "http",
           "host": [
             "localhost"
@@ -173,16 +199,42 @@
           "port": "8081",
           "path": [
             "management",
-            "3",
+            "2",
             "roles"
-          ],
-          "query": [
-            {
-              "key": "roleName",
-              "value": "manager"
-            }
           ]
         }
+      },
+      "response": []
+    },
+    {
+      "name": "refresh",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"username\": \"romek\",\r\n    \"password\": \"Romek123!\"\r\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8081/auth/refresh",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "auth",
+            "refresh"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "logout",
+      "request": {
+        "method": "GET",
+        "header": []
       },
       "response": []
     }

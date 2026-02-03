@@ -4,8 +4,12 @@ import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import pl.kurs.annotation.IsAdmin;
+import pl.kurs.annotation.IsModerator;
+import pl.kurs.annotation.IsUser;
 import pl.kurs.dto.CreateUserDto;
 import pl.kurs.dto.UserDto;
 import pl.kurs.entity.User;
@@ -24,6 +28,7 @@ public class UserController {
     private final UserMapper userMapper;
 
     @GetMapping("/{id}")
+    @IsUser
     public ResponseEntity<UserDto> getUserById(@PathVariable("id") @Min(value = 1, message = "ID must be at least 1") Long id) {
         User user = userService.getUserByIdWithRoles(id);
         return ResponseEntity.ok(userMapper.entityToDto(user));
@@ -36,12 +41,14 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @IsModerator
     public ResponseEntity<UserDto> updateUser(@PathVariable("id") @Min(value = 1, message = "ID must be at least 1")
             Long id, @RequestBody @Validated(Update.class) CreateUserDto dto) throws UserNotFoundException {
         return ResponseEntity.ok(userService.updateUser(id, dto));
     }
 
     @DeleteMapping("/{id}")
+    @IsAdmin
     public void deleteUserById(@PathVariable("id") @Min(value = 1, message = "ID must be at least 1") Long id) {
         userService.deleteUserById(id);
     }

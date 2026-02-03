@@ -11,7 +11,6 @@ import pl.kurs.entity.User;
 public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "password", ignore = true)
     @Mapping(target = "roles", ignore = true)
     User dtoToEntity(CreateUserDto dto);
 
@@ -19,6 +18,6 @@ public interface UserMapper {
     UserDto entityToDto(User user);
 
     default String mapRoleToString(Role role) {
-        return role.getRoleName();
+        return role.name();
     }
 }

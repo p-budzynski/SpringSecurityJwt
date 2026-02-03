@@ -15,7 +15,16 @@ Dependency:
 JsonWebToken - JWT
 
 Praca domowa:
-- Dorobic encje role, w ktorej bedziesz przechowywal role osobno
-- Przerobic controller do nadawania roli, tak zeby nadawac role innym endpointem (nie przy tworzeniu usera)
+- Dorobic encje roleEntity, w ktorej bedziesz przechowywal roleEntity osobno
+- Przerobic controller do nadawania roli, tak zeby nadawac roleEntity innym endpointem (nie przy tworzeniu usera)
 - Ujednolicic nazewnictwo w apce
 - Dorobic endpointy z kontrola roli
+
+
+PD2:
+- Cookie z pathem na wspolny path do refresh/logout
+- Zamienic nazwy roli na enum
+- POST z rolami w body
+- @PreAuthorize
+
+Poprzedni projekt - userzy w bazie, dorobić zarzadzanie sesja przez cookie JSESSIONID
