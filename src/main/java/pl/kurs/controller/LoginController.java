@@ -35,8 +35,8 @@ public class LoginController {
 
         if (authenticate.isAuthenticated()) {
 
-            AuthResponseDto authResponseDto = new AuthResponseDto(jwtService.generateToken(requestDto.getUsername()));
             User principal = (User) authenticate.getPrincipal();
+            AuthResponseDto authResponseDto = new AuthResponseDto(jwtService.generateToken(principal));
             RefreshToken refreshToken = refreshTokenService.create(principal);
 
             ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken.getId().toString())
@@ -61,7 +61,7 @@ public class LoginController {
         User user = refreshTokenService.consume(tokenId);
 
         RefreshToken refreshToken = refreshTokenService.create(user);
-        String jwt = jwtService.generateToken(user.getUsername());
+        String jwt = jwtService.generateToken(user);
 
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken.getId().toString())
                 .httpOnly(true)

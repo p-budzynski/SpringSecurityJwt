@@ -7,20 +7,31 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import pl.kurs.entity.Role;
+import pl.kurs.entity.User;
 
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtService {
     private static final String SECRET = "D0nL4JKs9MxZp9DBt2HT/j54Ul+j9kZ3icVTMeLEe+w=";
 
-    public String generateToken(String username) {
+    public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, username);
+        Set<String> roles = user.getRoles().stream().map(Enum::name).collect(Collectors.toSet());
+        claims.put("roles", roles);
+        return createToken(claims, user.getUsername());
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Role> extractRoles(String token) {
+        return extractAllClaims(token).get("roles", List.class)
+                .stream()
+                .map(s -> Role.valueOf((String) s))
+                .toList();
     }
 
     private String createToken(Map<String, Object> claims, String username) {
@@ -39,9 +50,8 @@ public class JwtService {
         return Keys.hmacShaKeyFor(key);
     }
 
-    public boolean validateToken(String token, UserDetails user) {
-        String tokenUsername = extractUsername(token);
-        return tokenUsername.equals(user.getUsername()) && !isTokenExpired(token);
+    public boolean validateToken(String token) {
+        return !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {

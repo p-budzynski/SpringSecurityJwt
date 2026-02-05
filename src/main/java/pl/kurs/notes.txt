@@ -28,3 +28,6 @@ PD2:
 - @PreAuthorize
 
 Poprzedni projekt - userzy w bazie, dorobić zarzadzanie sesja przez cookie JSESSIONID
+
+PD3:
+- Przerobic encje bazodanowa tak zeby nie implementowala UserDetails, tylko zrobic do tego obiekt domenowym np. UserInfo albo UserData/UserLogin etc.
