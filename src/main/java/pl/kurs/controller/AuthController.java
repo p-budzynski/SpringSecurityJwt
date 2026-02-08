@@ -17,7 +17,7 @@ import pl.kurs.dto.AuthResponseDto;
 import pl.kurs.entity.RefreshToken;
 import pl.kurs.entity.User;
 import pl.kurs.security.UserLogin;
-import pl.kurs.service.JwtService;
+import pl.kurs.security.JwtService;
 import pl.kurs.service.RefreshTokenService;
 
 import java.time.Duration;

@@ -1,4 +1,4 @@
-package pl.kurs.service;
+package pl.kurs.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
