@@ -16,7 +16,7 @@ import pl.kurs.dto.AuthRequestDto;
 import pl.kurs.dto.AuthResponseDto;
 import pl.kurs.entity.RefreshToken;
 import pl.kurs.entity.User;
-import pl.kurs.entity.UserLogin;
+import pl.kurs.security.UserLogin;
 import pl.kurs.service.JwtService;
 import pl.kurs.service.RefreshTokenService;
 

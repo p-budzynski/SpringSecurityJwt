@@ -1,9 +1,11 @@
-package pl.kurs.entity;
+package pl.kurs.security;
 
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.kurs.entity.Role;
+import pl.kurs.entity.User;
 
 import java.util.Collection;
 import java.util.Set;
