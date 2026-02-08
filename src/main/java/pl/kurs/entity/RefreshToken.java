@@ -23,5 +23,4 @@ public class RefreshToken {
 
     private Instant expiresAt;
 
-
 }

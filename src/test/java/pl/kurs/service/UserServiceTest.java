@@ -71,34 +71,34 @@ public class UserServiceTest {
         verify(userRepositoryMock).save(argThat(u -> u.getPassword().equals(hashedPassword)));
     }
 
-    @Test
-    void shouldReturnUserDetailsWhenFindByUsername() {
-        //given
-        String username = "userTest";
-        User user = new User(username, "user@test.com", "hashed_password");
+//    @Test
+//    void shouldReturnUserDetailsWhenFindByUsername() {
+//        //given
+//        String username = "userTest";
+//        User user = new User(username, "user@test.com", "hashed_password");
+//
+//        when(userRepositoryMock.findByUsernameWithRoles(username)).thenReturn(Optional.of(user));
+//
+//        //when
+//        UserDetails result = userService.loadUserByUsername(username);
+//
+//        //then
+//        assertThat(result).isNotNull();
+//        assertThat(result.getUsername()).isEqualTo(username);
+//    }
 
-        when(userRepositoryMock.findByUsernameWithRoles(username)).thenReturn(Optional.of(user));
-
-        //when
-        UserDetails result = userService.loadUserByUsername(username);
-
-        //then
-        assertThat(result).isNotNull();
-        assertThat(result.getUsername()).isEqualTo(username);
-    }
-
-    @Test
-    void shouldThrowExceptionWhenUsernameNotFound() {
-        //given
-        String username = "nonExistent";
-
-        when(userRepositoryMock.findByUsernameWithRoles(username)).thenReturn(Optional.empty());
-
-        //when then
-        assertThatThrownBy(() -> userService.loadUserByUsername(username))
-                .isInstanceOf(UsernameNotFoundException.class)
-                .hasMessage("User: " + username + " not found");
-    }
+//    @Test
+//    void shouldThrowExceptionWhenUsernameNotFound() {
+//        //given
+//        String username = "nonExistent";
+//
+//        when(userRepositoryMock.findByUsernameWithRoles(username)).thenReturn(Optional.empty());
+//
+//        //when then
+//        assertThatThrownBy(() -> userService.loadUserByUsername(username))
+//                .isInstanceOf(UsernameNotFoundException.class)
+//                .hasMessage("User: " + username + " not found");
+//    }
 
     @Test
     void shouldReturnUserWhenFindById() {

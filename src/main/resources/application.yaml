@@ -1,8 +1,10 @@
 spring:
     security:
-        user:
-            name: pawel
-            password: dupa
+        jwt:
+            secret: "D0nL4JKs9MxZp9DBt2HT/j54Ul+j9kZ3icVTMeLEe+w="
+            expiration-ms: 1800000
+            refresh-token-expiration-ms: 86400000
+            cleanup-cron: "0 0 3 * * ?"
     datasource:
         url: jdbc:postgresql://localhost:5432/postgres
         username: postgres

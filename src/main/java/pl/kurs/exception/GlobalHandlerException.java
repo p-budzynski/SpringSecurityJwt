@@ -15,30 +15,6 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalHandlerException {
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ExceptionResponseDto> handleDataIntegrityViolationException(DataIntegrityViolationException exception) {
-        String message = exception.getMessage();
-
-        if (message != null && message.contains("users_email_key")) {
-            ExceptionResponseDto response = new ExceptionResponseDto(
-                    "User with this email already exists", HttpStatus.CONFLICT.toString(), LocalDateTime.now()
-            );
-            return ResponseEntity.status(HttpStatus.CONFLICT.value()).body(response);
-        }
-
-        if (message != null && message.contains("users_username_key")) {
-            ExceptionResponseDto response = new ExceptionResponseDto(
-                    "User with this name already exists", HttpStatus.CONFLICT.toString(), LocalDateTime.now()
-            );
-            return ResponseEntity.status(HttpStatus.CONFLICT.value()).body(response);
-        }
-
-        ExceptionResponseDto response = new ExceptionResponseDto(
-                "Data integrity violation", HttpStatus.CONFLICT.toString(), LocalDateTime.now()
-        );
-        return ResponseEntity.status(HttpStatus.CONFLICT.value()).body(response);
-    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponseDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
         String errorMessages = exception.getBindingResult()
@@ -66,5 +42,11 @@ public class GlobalHandlerException {
     public ResponseEntity<ExceptionResponseDto> handleUserNotFoundException(UserNotFoundException exception) {
         ExceptionResponseDto response = new ExceptionResponseDto(exception.getMessage(), HttpStatus.BAD_REQUEST.toString(), LocalDateTime.now());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(response);
+    }
+
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
+    public ResponseEntity<ExceptionResponseDto> handleResourceAlreadyExistsException(ResourceAlreadyExistsException exception) {
+        ExceptionResponseDto response = new ExceptionResponseDto(exception.getMessage(), HttpStatus.CONFLICT.toString(), LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.CONFLICT.value()).body(response);
     }
 }

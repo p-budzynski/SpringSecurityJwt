@@ -5,10 +5,10 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import pl.kurs.entity.Role;
-import pl.kurs.entity.User;
+import pl.kurs.entity.UserLogin;
 
 import java.security.Key;
 import java.util.*;
@@ -17,13 +17,18 @@ import java.util.stream.Collectors;
 
 @Component
 public class JwtService {
-    private static final String SECRET = "D0nL4JKs9MxZp9DBt2HT/j54Ul+j9kZ3icVTMeLEe+w=";
 
-    public String generateToken(User user) {
+    @Value("${spring.security.jwt.secret}")
+    private String secretKey;
+
+    @Value("${spring.security.jwt.expiration-ms}")
+    private long jwtExpiration;
+
+    public String generateToken(UserLogin userLogin) {
         Map<String, Object> claims = new HashMap<>();
-        Set<String> roles = user.getRoles().stream().map(Enum::name).collect(Collectors.toSet());
+        Set<String> roles = userLogin.getRoles().stream().map(Enum::name).collect(Collectors.toSet());
         claims.put("roles", roles);
-        return createToken(claims, user.getUsername());
+        return createToken(claims, userLogin.getUsername());
     }
 
     @SuppressWarnings("unchecked")
@@ -35,18 +40,17 @@ public class JwtService {
     }
 
     private String createToken(Map<String, Object> claims, String username) {
-
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000*60*30))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
                 .signWith(getSignatureKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
     private Key getSignatureKey() {
-        byte[] key = Decoders.BASE64.decode(SECRET);
+        byte[] key = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(key);
     }
 
